@@ -4,14 +4,22 @@
 
 
 # Load nescessary packages
-require(dplyr, plyr)
+require(plyr)
+require(dplyr)
 
 # ----- 1) Read in the data ---------------------
 
-path <- c("Desktop/DPX_Baseline/Behave_Logs/") # <- location of files
+## Verhaltensdaten
+path <- c("Desktop/Bachelor/Daten/Logs_Caro") # <- location of files
 
-paths <- dir(path = path, full.names = T, pattern = "\\.txt$")
+## Baselinedaten
+paths <- dir(path = path, full.names = T, pattern = "rawdata.txt$")
 names(paths) <- basename(paths)
+
+## FBdaten
+pathFB <- c("Desktop/Bachelor/Daten/rdata_dpx_rnr_2018-02-21_18-30.csv")
+
+fb <- read.csv(pathFB,header=TRUE)
 
 # ----- 2) Create data frame containing all files and observations
 
@@ -23,4 +31,11 @@ names(paths) <- basename(paths)
 All_RT <- plyr::ldply(paths, read.table, sep =",", dec = ".", header=F)
 rm(paths)
 
-# Rename variables
+# Select columns with data, not names
+
+All_RT_selected <- select(All_RT, .id, V2, V4, V6, V8,V10)
+
+## default names substitue with right names through vector of same length
+names(All_RT_selected) <- c( "ID", "Block", "Trialnr", "Trialtype", "RT", "Reactiontype")
+
+All_RT_selected$ID <- gsub(All_RT_selected$ID, pattern = "rawdata.txt", replacement = "")
