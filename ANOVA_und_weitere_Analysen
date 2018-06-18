@@ -87,7 +87,7 @@ cor(x, y)
 t.test(y,mu=3) # Ho: mu=3 
 
 
-################## FREQUENCIES
+################## FREQUENCIES            https://www.statmethods.net/stats/frequencies.html
 
 # 2-Way Frequency Table
 attach(mydata)
