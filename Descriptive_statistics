@@ -165,7 +165,7 @@ Baseline_RnR_Plot <- ggplot(hits_Baseline,
   geom_point(size = 1, position = position_dodge(1)) + 
   geom_errorbar(mapping = aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT), 
                 width=0.2, size=1, position = position_dodge(1)) +
-  coord_cartesian(ylim = c(150, 500)) + facet_wrap(~ Rew); Baseline_RnR_Plot
+    coord_cartesian(ylim = c(150, 500)) + facet_wrap(~ Rew); Baseline_RnR_Plot
 
 
 ## Abbildung für Blocks und Baseline zusammen
@@ -175,4 +175,7 @@ All_RnR_Plot <- ggplot(hits,
   geom_point(size = 1, position = position_dodge(1)) + 
   geom_errorbar(mapping = aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT), 
                 width=0.2, size=1, position = position_dodge(1)) +
-  coord_cartesian(ylim = c(150, 500)) + facet_wrap(~ Rew); Block_RnR_Plot
+  geom_point(data=hits_Baseline,size = 1, position = position_dodge(1))+
+  geom_errorbar(data=hits_Baseline, mapping = aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT),
+                width=0.2, size=1, position = position_dodge(1)) +
+  coord_cartesian(ylim = c(150, 500)) + facet_wrap(~ Rew); All_RnR_Plot
