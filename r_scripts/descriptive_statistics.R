@@ -1,0 +1,56 @@
+## Deskriptive Statistiken für Baseline
+
+require(plyr)
+require(dplyr)
+
+## mean und Zahl nach miss/hit/incorrect
+All_RT_selected %>% group_by(Reactiontype)%>%summarise(m = mean(RT), n = sum(!is.na(RT)))
+## mean, sd, se und Zahl nach miss/hit/incorrect bei versch. Trialtypes
+All_RT_selected%>%group_by(Trialtype, Reactiontype)%>%
+  summarise(m_RT=mean(RT),
+            sd_RT=sd(RT),
+            se_RT=sd(RT)/sqrt(sum(!is.na(RT))),
+            n=sum(!is.na(RT))
+  )
+##s.o. nach VP getrennt
+Baseline_descriptive <- All_RT_selected%>%group_by(ID, Trialtype, Reactiontype)%>%
+  summarise(m_RT=mean(RT),
+            sd_RT=sd(RT),
+            se_RT=sd(RT)/sqrt(sum(!is.na(RT))),
+            n=sum(!is.na(RT))
+  )
+
+## mean RT und mean n über Personen pro Trialtype
+
+Baseline_descriptiveAcross <- Baseline_descriptive%>%group_by(Trialtype, Reactiontype)%>%
+  summarise(M_RT=mean(m_RT),
+            M_N=mean(n))
+
+########################
+## Deskriptive Statistiken für Blocks
+
+require(plyr)
+require(dplyr)
+
+## mean und Zahl nach miss/hit/incorrect
+Block_RT_selected %>% group_by(Reactiontype)%>%summarise(m = mean(RT), n = sum(!is.na(RT)))
+## mean, sd, se und Zahl nach miss/hit/incorrect bei versch. Trialtypes
+Block_RT_selected%>%group_by(Trialtype, Reactiontype)%>%
+  summarise(m_RT=mean(RT),
+            sd_RT=sd(RT),
+            se_RT=sd(RT)/sqrt(sum(!is.na(RT))),
+            n=sum(!is.na(RT))
+  )
+##s.o. nach VP getrennt
+Block_descriptive <- Block_RT_selected%>%group_by(ID, Trialtype, Reactiontype)%>%
+  summarise(m_RT=mean(RT),
+            sd_RT=sd(RT),
+            se_RT=sd(RT)/sqrt(sum(!is.na(RT))),
+            n=sum(!is.na(RT))
+  )
+
+## mean RT und mean n über Personen pro Trialtype
+
+Block_descriptiveAcross <- Block_descriptive%>%group_by(Trialtype, Reactiontype)%>%
+  summarise(M_RT=mean(m_RT),
+            M_N=mean(n))
