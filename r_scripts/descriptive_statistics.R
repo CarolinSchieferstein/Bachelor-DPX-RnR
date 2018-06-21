@@ -140,7 +140,7 @@ Baseline_RT <- All_RT_selected%>%group_by(ID, Block,Trialtype, Reactiontype)%>%
 Baseline_RT_Zuordnung <- merge(VP_Zuordnung, Baseline_RT, by = "ID")
 
 ## soll in Plot mit Blocks 3. Kategorie von BlockR sein -> BlockR = 99
-Baseline_RT_Zuordnung <- mutate(Baseline_RT_Zuordnung, BlockR = 99 )
+Baseline_RT_Zuordnung <- mutate(Baseline_RT_Zuordnung, BlockR = "Baseline" )
 Baseline_RT_Zuordnung <- select(Baseline_RT_Zuordnung, ID, Rew, BlockR, Trialtype:n )
 
 ## ordnen nach Rew BlockR, Trial-&Reactiontype, + mean, SD, SE, n
@@ -167,15 +167,22 @@ Baseline_RnR_Plot <- ggplot(hits_Baseline,
                 width=0.2, size=1, position = position_dodge(1)) +
     coord_cartesian(ylim = c(150, 500)) + facet_wrap(~ Rew); Baseline_RnR_Plot
 
+## Datensätze zusammenpacken
+hits_All <- rbind(hits, hits_Baseline)
+hits_All$BlockR <- recode(hits_All$BlockR, "0"="no Reward", "1"="Reward")
+hits_All$BlockR = factor(hits_All$BlockR,levels(hits_All$BlockR)[c(3,1,2)])
+hits_All$Rew <- recode(hits_All$Rew, "0"="Verzögerte Belohnung", "1"="Direkte Belohnung")
 
 ## Abbildung für Blocks und Baseline zusammen
 require(ggplot2)
-All_RnR_Plot <- ggplot(hits, 
-                         aes(x = Trialtype, y = m_RT, color = BlockR)) + 
-  geom_point(size = 1, position = position_dodge(1)) + 
-  geom_errorbar(mapping = aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT), 
-                width=0.2, size=1, position = position_dodge(1)) +
-  geom_point(data=hits_Baseline,size = 1, position = position_dodge(1))+
-  geom_errorbar(data=hits_Baseline, mapping = aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT),
-                width=0.2, size=1, position = position_dodge(1)) +
-  coord_cartesian(ylim = c(150, 500)) + facet_wrap(~ Rew); All_RnR_Plot
+All_RnR_Plot <- ggplot(hits_All, 
+                         aes(x = Trialtype, y = m_RT, fill = BlockR, shape = BlockR)) +
+  geom_bar(size = 2, position = position_dodge(1),  stat = 'identity') +
+  geom_errorbar(data=hits_All, mapping = aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT),
+                width = 0.2, size=1, position = position_dodge(1), color='black') +
+      coord_cartesian(ylim = c(200, 500)) +
+  labs(x = 'Trialtype', y = 'mean RT', title = 'Descriptive RTs') +
+  theme(axis.text.x = element_text(color = 'black', size = 13),
+        axis.text.y = element_text(color = 'black', size = 13),
+        strip.text = element_text(color="black", size = 13)) +
+  facet_wrap(~ Rew) ; All_RnR_Plot
