@@ -3,4 +3,5 @@ April: Theorie und Methoden 2/3 Seiten geschrieben, Literatur gesammelt
 Mai: Fragebogendaten in Excel: Skalenwerte berechnen, Deskriptive Statistiken für Alter & Skalen, Einstieg in RStudio mit Swirl,
      Einlesen der Verhaltensdaten in RStudio & Vorbearbeitung der Datenstruktur (Variablen ordnen, benennen, mean_RT
 Juni: Deskriptive Darstellung der Reaktionszeiten, Verteilung über Trialtypen, Bedingungen und Blöcke
-26.6.: Swirl "Statistical Inference" , "Psychology Statistics"
+26.6.: Swirl "Statistical Inference" , "Psychology Statistics" Oneway ANOVA, Twoway ANOVA(between)
+27.6.: Swirl Update und neu einrichten, "Psychology Statistics" Twoway ANOVA (mixed), Chi-Square, Kolloquiumspräsentation
