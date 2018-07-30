@@ -16,3 +16,7 @@ names(fragebogen1) <- c("sex", "age", "Abschluss", "Beruf", "ID", "01", "02", "0
                         "70", "71", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "Dauer1", "Dauer2", "Dauer3", "Dauer4", "Dauer5", "Dauergesamt")   ### columns umbenennen
 
 fragebogen2 <- merge(fragebogen1,VP_Zuordnung, by = "ID") ### über VP-Zuordnung Rew und perm dazu
+fragebogen2 <- select(fragebogen2, ID, Rew, Perm, sex:Dauergesamt) ## Variablen ordnen
+
+# Save dataset for later use
+write.table(fragebogen2, '~/Desktop/Bachelor/Daten/R_Frames/Fragebogen.txt', row.names = F, sep = '\t')
