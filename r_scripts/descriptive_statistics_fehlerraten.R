@@ -1,6 +1,7 @@
 ##### ##### #####     Analysis scrips for behavioral data   ##### ##### #####
 #                                 July 2018 
 #                       Compute Descriptive Statistics
+#                                FEHLERRATEN
 #
 # --------- BASELINE -----------
 # Load necessary packages
