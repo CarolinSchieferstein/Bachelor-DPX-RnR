@@ -1,6 +1,6 @@
 ##### ##### #####     Analysis scripts for behavioral data   ##### ##### #####
 #                                 May 2018 
-#                           Read in Baseline data    
+#                         Read in Main Baseline data    
 
 # Load nescessary packages
 require(plyr)
