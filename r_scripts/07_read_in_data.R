@@ -66,3 +66,4 @@ All_Pilot2b_selected$Reactiontype <- dplyr::recode(All_Pilot2b_selected$Reaction
 # Save dataset for later use
 write.table(All_Pilot1b_selected, '~/Desktop/Bachelor/Daten/R_Frames/All_Pilot1b.txt', row.names = F, sep = '\t')
 write.table(All_Pilot2b_selected, '~/Desktop/Bachelor/Daten/R_Frames/All_Pilot2b.txt', row.names = F, sep = '\t')
+
