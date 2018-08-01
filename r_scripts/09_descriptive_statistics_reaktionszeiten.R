@@ -1,7 +1,7 @@
 ##### ##### #####     Analysis scrips for behavioral data   ##### ##### #####
 #                                 August 2018
 #                       Compute Descriptive Statistics
-#                                   Main
+#                                   Pilot
 #                              Reaktionszeiten
 #
 # --------- BASELINE -----------
@@ -11,38 +11,52 @@ require(dplyr)
 
 # -------- Read in und Aufteilung/Ordnen bei 04 für Fehlerraten schon gemacht -> schon im Environment drin --------
 # Get the data
-All_RT_selected <- read.table('~/Desktop/Bachelor/Daten/R_Frames/All_RT.txt',
+All_Pilot1_selected <- read.table('~/Desktop/Bachelor/Daten/R_Frames/All_Pilot1.txt',
                               header = T)
+All_Pilot2_selected <- read.table('~/Desktop/Bachelor/Daten/R_Frames/All_Pilot2.txt',
+                                   header = T)
 
-# VP_Zuordnung einlesen
-
-VP_Zuordnung <- read.table("Desktop/VP_Zuordnung.txt", header=TRUE)
-
-## Zuordnung nach ID mit Daten mergen, dann nach perm aufteilen
-
-colnames(VP_Zuordnung)[colnames(VP_Zuordnung)=="VP"] <- "ID"
-RT_Zuordnung <- merge(VP_Zuordnung, All_RT_selected, by = "ID")
-
-RT_Zuordnung$Phase <- "Baseline"
+# VP_Zuordnung einfügen
+Pilot1_Zuordnung <- mutate(All_Pilot1_selected, Phase = "Baseline", Rew = 0, perm = 0)
+Pilot2_Zuordnung <- mutate(All_Pilot2_selected, Phase = "Baseline", Rew = 0, perm = 0)
 
 # Split dataset in corrects, incorrect and misses
-Hits <- filter(RT_Zuordnung, Reactiontype == 'Correct')
-FAs <- filter(RT_Zuordnung, Reactiontype == 'Incorrect')
-Miss <- filter(RT_Zuordnung, Reactiontype == 'Miss')
+Hits1 <- filter(Pilot1_Zuordnung, Reactiontype == 'Correct')
+FAs1 <- filter(Pilot1_Zuordnung, Reactiontype == 'Incorrect')
+Miss1 <- filter(Pilot1_Zuordnung, Reactiontype == 'Miss')
+
+Hits2 <- filter(Pilot2_Zuordnung, Reactiontype == 'Correct')
+FAs2 <- filter(Pilot2_Zuordnung, Reactiontype == 'Incorrect')
+Miss2 <- filter(Pilot2_Zuordnung, Reactiontype == 'Miss')
 
 # Save datasets for later use
-write.table(Hits,
-            '~/Desktop/Bachelor/Daten/R_Frames/Hits_RT.txt',
+write.table(Hits1,
+            '~/Desktop/Bachelor/Daten/R_Frames/Hits1.txt',
             row.names = F,
             sep = '\t')
 
-write.table(FAs,
-            '~/Desktop/Bachelor/Daten/R_Frames/FAs_RT.txt',
+write.table(FAs1,
+            '~/Desktop/Bachelor/Daten/R_Frames/FAs1.txt',
             row.names = F,
             sep = '\t')
 
-write.table(Miss,
-            '~/Desktop/Bachelor/Daten/R_Frames/Miss_RT.txt',
+write.table(Miss1,
+            '~/Desktop/Bachelor/Daten/R_Frames/Miss1.txt',
+            row.names = F,
+            sep = '\t')
+
+write.table(Hits2,
+            '~/Desktop/Bachelor/Daten/R_Frames/Hits2.txt',
+            row.names = F,
+            sep = '\t')
+
+write.table(FAs2,
+            '~/Desktop/Bachelor/Daten/R_Frames/FAs2.txt',
+            row.names = F,
+            sep = '\t')
+
+write.table(Miss2,
+            '~/Desktop/Bachelor/Daten/R_Frames/Miss2.txt',
             row.names = F,
             sep = '\t')
 
@@ -50,14 +64,25 @@ write.table(Miss,
 # COMPUTE DESCRIPTIVE STATISTICS FOR BASELINE----
 
 # Hits rauslesen, group_by Trialtype , Rew und perm aufteilen, nicht nach Reactiontype, weil nur Hits drin! + summarise
-Hits_sum <- Hits %>% group_by(Trialtype, Rew, Phase) %>%
-                     summarise(m_RT = mean(RT),
-                               sd_RT = sd(RT),
-                               se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
-                               n = sum(!is.na(RT)))
+Hits1_sum <- Hits1 %>% group_by(Trialtype, Rew, Phase) %>%
+  summarise(m_RT = mean(RT),
+            sd_RT = sd(RT),
+            se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
+            n = sum(!is.na(RT)))
+Hits2_sum <- Hits2 %>% group_by(Trialtype, Rew, Phase) %>%
+  summarise(m_RT = mean(RT),
+            sd_RT = sd(RT),
+            se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
+            n = sum(!is.na(RT)))
 
 require(ggplot2)
-ggplot(Hits_sum, aes(x=Trialtype, y=m_RT)) + 
+ggplot(Hits_sum1, aes(x=Trialtype, y=m_RT)) + 
+  geom_errorbar(aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT), colour="black", width=.1, position=position_dodge(.5)) +
+  geom_line(position=position_dodge(.5)) +
+  geom_point(position=position_dodge(.5), size=3) +
+  facet_wrap(~Rew)
+
+ggplot(Hits_sum2, aes(x=Trialtype, y=m_RT)) + 
   geom_errorbar(aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT), colour="black", width=.1, position=position_dodge(.5)) +
   geom_line(position=position_dodge(.5)) +
   geom_point(position=position_dodge(.5), size=3) +
@@ -69,60 +94,84 @@ require(plyr)
 require(dplyr)
 
 # Get the data
-All_RTB_selected <- read.table('~/Desktop/Bachelor/Daten/R_Frames/All_RTB.txt', 
-                               header = T)
+All_Pilot1b_selected <- read.table('~/Desktop/Bachelor/Daten/R_Frames/All_Pilot1b.txt',
+                                  header = T)
+All_Pilot2b_selected <- read.table('~/Desktop/Bachelor/Daten/R_Frames/All_Pilot2b.txt',
+                                  header = T)
 # VP_Zuordnung einlesen
 
-VP_Zuordnung <- read.table("Desktop/VP_Zuordnung.txt", header=TRUE)
-
-## Zuordnung nach ID mit Daten mergen, dann nach perm aufteilen
-
-colnames(VP_Zuordnung)[colnames(VP_Zuordnung)=="VP"] <- "ID"
-All_RTB_Prezuordnung <- merge(VP_Zuordnung, All_RTB_selected, by = "ID")
-All_RTB_perm0 <- dplyr::filter(RTB_Prezuordnung, Perm==0)
-All_RTB_perm1 <- dplyr::filter(RTB_Prezuordnung, Perm==1)
+Pilot1b_Zuordnung <- mutate(All_Pilot1_selected, Rew = 0, perm = 0)
+Pilot2b_Zuordnung <- mutate(All_Pilot2_selected, Rew = 0, perm = 0)
 
 ## Blöcke nach Rew - kein Rew kodieren
 # Perm = 0 --> Block 1,3,5,7,9 nR // Block 2,4,6,8,10 R
-All_RTB_perm0 <- dplyr::mutate(All_RTB_perm0, Phase= ifelse(Block%in%c(1,3,5,7,9),"noReward","Reward"))
-# Perm1 --> Block 1,3,5,7,9 R // BLock 2,4,6,8,10 nR
-All_RTB_perm1 <- dplyr::mutate(All_RTB_perm1, Phase= ifelse(Block%in%c(1,3,5,7,9),"Reward","noReward"))
+Pilot1b_Zuordnung <- dplyr::mutate(Pilot1b_Zuordnung, Phase= ifelse(Block%in%c(1,3,5,7,9),"noReward","Reward"))
+Pilot2b_Zuordnung <- dplyr::mutate(Pilot2b_Zuordnung, Phase= ifelse(Block%in%c(1,3,5,7,9),"noReward","Reward"))
 
-All_RTB_Zuordnung <- rbind(All_RTB_perm0,All_RTB_perm1)
 
 # Split dataset in corrects, incorrect and misses
-Hits_B <- filter(All_RTB_Zuordnung, Reactiontype == 'Correct')
-FAs_B <- filter(All_RTB_Zuordnung, Reactiontype == 'Incorrect')
-Miss_B <- filter(All_RTB_Zuordnung, Reactiontype == 'Miss')
+Hits1b <- filter(Pilot1b_Zuordnung, Reactiontype == 'Correct')
+FAs1b<- filter(Pilot1b_Zuordnung, Reactiontype == 'Incorrect')
+Miss1b <- filter(Pilot1b_Zuordnung, Reactiontype == 'Miss')
+
+Hits2b <- filter(Pilot2b_Zuordnung, Reactiontype == 'Correct')
+FAs2b<- filter(Pilot2b_Zuordnung, Reactiontype == 'Incorrect')
+Miss2b <- filter(Pilot2b_Zuordnung, Reactiontype == 'Miss')
 
 #Save datasets for later use
-write.table(Hits_B,
-            '~/Desktop/Bachelor/Daten/R_Frames/Hits_RTB.txt',
+write.table(Hits1b,
+            '~/Desktop/Bachelor/Daten/R_Frames/Hits1b.txt',
             row.names = F,
             sep = '\t')
 
-write.table(FAs_B,
-            '~/Desktop/Bachelor/Daten/R_Frames/FAs_RTB.txt',
+write.table(FAs1b,
+            '~/Desktop/Bachelor/Daten/R_Frames/FAs1b.txt',
             row.names = F,
             sep = '\t')
 
-write.table(Miss_B,
-            '~/Desktop/Bachelor/Daten/R_Frames/Miss_RTB.txt',
+write.table(Miss1b,
+            '~/Desktop/Bachelor/Daten/R_Frames/Miss1b.txt',
             row.names = F,
             sep = '\t')
 
+write.table(Hits2b,
+            '~/Desktop/Bachelor/Daten/R_Frames/Hits2b.txt',
+            row.names = F,
+            sep = '\t')
+
+write.table(FAs2b,
+            '~/Desktop/Bachelor/Daten/R_Frames/FAs2b.txt',
+            row.names = F,
+            sep = '\t')
+
+write.table(Miss2b,
+            '~/Desktop/Bachelor/Daten/R_Frames/Miss2b.txt',
+            row.names = F,
+            sep = '\t')
 
 # COMPUTE DESCRIPTIVE STATISTICS FOR BLOCKS----
 
 # Hits rauslesen, group_by Trialtype , Rew und perm aufteilen, nicht nach Reactiontype, weil nur Hits drin! + summarise
-Hits_sumB <- Hits_B %>% group_by(Trialtype, Rew, Phase) %>%
+Hits1b_sum <- Hits1b %>% group_by(Trialtype, Rew, Phase) %>%
+  summarise(m_RT = mean(RT),
+            sd_RT = sd(RT),
+            se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
+            n = sum(!is.na(RT)))
+
+Hits2b_sum <- Hits2b %>% group_by(Trialtype, Rew, Phase) %>%
   summarise(m_RT = mean(RT),
             sd_RT = sd(RT),
             se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
             n = sum(!is.na(RT)))
 
 require(ggplot2)
-ggplot(Hits_sumB, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) + 
+ggplot(Hits1b_sum, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) + 
+  geom_errorbar(aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT), width=.1, position=position_dodge(.5)) +
+  geom_line(position=position_dodge(.5)) +
+  geom_point(position=position_dodge(.5), size=3) +
+  facet_wrap(~Rew)
+
+ggplot(Hits2b_sum, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) + 
   geom_errorbar(aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT), width=.1, position=position_dodge(.5)) +
   geom_line(position=position_dodge(.5)) +
   geom_point(position=position_dodge(.5), size=3) +
@@ -133,17 +182,24 @@ ggplot(Hits_sumB, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) +
 require(plyr)
 require(dplyr)
 
-Hits_sum_plot <- Hits_sum %>% group_by(Trialtype, Rew, Phase)
-Hits_sumB_plot <- Hits_sumB %>% group_by(Trialtype, Rew, Phase)
+Hits1_sum_plot <- Hits1_sum %>% group_by(Trialtype, Rew, Phase)
+Hits1b_sum_plot <- Hits1b_sum %>% group_by(Trialtype, Rew, Phase)
 
-Hits_sum_plot_All <- rbind(Hits_sum_plot, Hits_sumB_plot)
+Hits1_sum_plot_All <- rbind(Hits1_sum_plot, Hits1b_sum_plot)
 
-Hits_sum_plot_All$Rew[Hits_sum_plot_All$Rew==0] <- "Verzögerte Belohnung"
-Hits_sum_plot_All$Rew[Hits_sum_plot_All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
+Hits1_sum_plot_All$Rew[Hits1_sum_plot_All$Rew==0] <- "Verzögerte Belohnung"
+Hits1_sum_plot_All$Rew[Hits1_sum_plot_All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
 
+Hits2_sum_plot <- Hits2_sum %>% group_by(Trialtype, Rew, Phase)
+Hits2b_sum_plot <- Hits2b_sum %>% group_by(Trialtype, Rew, Phase)
+
+Hits2_sum_plot_All <- rbind(Hits2_sum_plot, Hits2b_sum_plot)
+
+Hits2_sum_plot_All$Rew[Hits2_sum_plot_All$Rew==0] <- "Verzögerte Belohnung"
+Hits2_sum_plot_All$Rew[Hits2_sum_plot_All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
 
 require(ggplot2)
-ggplot(Hits_sum_plot_All, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) +
+ggplot(Hits1_sum_plot_All, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) +
   geom_errorbar(aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT),
                 colour="black",
                 width=.25,      # Breite der Querstriche am Ende der Fehlerbalken
@@ -154,7 +210,27 @@ ggplot(Hits_sum_plot_All, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)
   facet_wrap(~ Rew, ncol = 2, scales = 'free_y') +      # free_y --> y-Achse an beide teile einzeln
   coord_cartesian(ylim = c(200, 500)) +         # Range der Y-Achse
   theme_classic() +     # weißer Hintergrund etc., gibt viele einfach ausprobieren, welches man möchte
-  labs(x = 'Trialtype', y = 'Mittlere Reaktionszeit', title = "Mittlere Reaktionszeit in der Haupttestung") +
+  labs(x = 'Trialtype', y = 'Mittlere Reaktionszeit', title = "Mittlere Reaktionszeit in Pilot 1") +
+  theme(strip.background = element_blank(),
+        strip.text= element_text(color= "black", size = 12),
+        axis.text = element_text(color='black', size = 12),
+        axis.title = element_text(color='black', size = 13),
+        plot.title = element_text(hjust = .5),
+        legend.text = element_text(size = 12),
+        legend.title = element_blank())
+
+ggplot(Hits2_sum_plot_All, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) +
+  geom_errorbar(aes(ymin=m_RT-se_RT, ymax=m_RT+se_RT),
+                colour="black",
+                width=.25,      # Breite der Querstriche am Ende der Fehlerbalken
+                position=position_dodge(.25),
+                size = .6) +
+  geom_line(position=position_dodge(.25), size = 1) +
+  geom_point(position=position_dodge(.25), size = 3) +
+  facet_wrap(~ Rew, ncol = 2, scales = 'free_y') +      # free_y --> y-Achse an beide teile einzeln
+  coord_cartesian(ylim = c(200, 500)) +         # Range der Y-Achse
+  theme_classic() +     # weißer Hintergrund etc., gibt viele einfach ausprobieren, welches man möchte
+  labs(x = 'Trialtype', y = 'Mittlere Reaktionszeit', title = "Mittlere Reaktionszeit in Pilot 2") +
   theme(strip.background = element_blank(),
         strip.text= element_text(color= "black", size = 12),
         axis.text = element_text(color='black', size = 12),
@@ -164,7 +240,8 @@ ggplot(Hits_sum_plot_All, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)
         legend.title = element_blank())
 
 # Save for later use
-write.table(Hits_sum_plot_All, '~/Desktop/Bachelor/Daten/R_Frames/Hits_sum_plot_All.txt', row.names = F, sep = '\t')
+write.table(Hits1_sum_plot_All, '~/Desktop/Bachelor/Daten/R_Frames/Hits1_sum_plot_All.txt', row.names = F, sep = '\t')
+write.table(Hits2_sum_plot_All, '~/Desktop/Bachelor/Daten/R_Frames/Hits2_sum_plot_All.txt', row.names = F, sep = '\t')
 
 ########################################################################################################################
 ########################################################################################################################

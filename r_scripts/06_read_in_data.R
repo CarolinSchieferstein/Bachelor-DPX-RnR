@@ -1,6 +1,6 @@
 ##### ##### #####     Analysis scripts for behavioral data   ##### ##### #####
 #                                 August 2018 
-#                          Read in Pilot Baseline data    
+#                           Read in Pilot data    
 
 # Load nescessary packages
 require(plyr)

@@ -1,7 +1,9 @@
 ##### ##### #####     Analysis scrips for behavioral data   ##### ##### #####
 #                                 July 2018 
 #                       Compute Descriptive Statistics
-#                          FEHLERRATEN HAUPTTESTUNG
+#                                   Main
+#                                Fehlerraten
+#
 # --------- BASELINE -----------
 # Load necessary packages
 require(plyr)
