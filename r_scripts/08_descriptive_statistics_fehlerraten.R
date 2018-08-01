@@ -210,6 +210,8 @@ FAs_sum1b_plot <- FAs_sum1b %>% group_by(Trialtype, Rew, Phase) %>%
 
 FAs_sum_plot1All <- rbind(FAs_sum1_plot,FAs_sum1b_plot)
 
+FAs_sum_plot1All$Rew[FAs_sum_plot1All$Rew==0] <- "Verzögerte Belohnung"
+FAs_sum_plot1All$Rew[FAs_sum_plot1All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
 
 require(ggplot2)
 ggplot(FAs_sum_plot1All, aes(x=Trialtype, y=m_FR, color = Phase, group = Phase)) + 
@@ -248,6 +250,8 @@ FAs_sum2b_plot <- FAs_sum2b %>% group_by(Trialtype, Rew, Phase) %>%
 
 FAs_sum_plot2All <- rbind(FAs_sum2_plot,FAs_sum2b_plot)
 
+FAs_sum_plot2All$Rew[FAs_sum_plot2All$Rew==0] <- "Verzögerte Belohnung"
+FAs_sum_plot2All$Rew[FAs_sum_plot2All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
 
 require(ggplot2)
 ggplot(FAs_sum_plot2All, aes(x=Trialtype, y=m_FR, color = Phase, group = Phase)) + 
@@ -276,3 +280,4 @@ write.table(FAs_sum_plot2All, '~/Desktop/Bachelor/Daten/R_Frames/FAs_sum_plot2Al
 
 ## Für beide Pilotierungen zusammen
 # nicht so sinnvoll einfach beide einzelnen Abbildungen nebeneinander packen
+
