@@ -11,15 +11,9 @@ require(dplyr)
 ## Verhaltensdaten
 path <- c("Desktop/Bachelor/Daten/Logs_Caro") # <- location of files
 
-## Baselinedaten
+## Blockdaten
 paths <- dir(path = path, full.names = T, pattern = "block.txt$")
 names(paths) <- basename(paths)
-
-## Daten Fragebogen
-# pathFB <- c("Desktop/Bachelor/Daten/rdata_dpx_rnr_2018-02-21_18-30.csv")
-# 
-# fb <- read.csv(pathFB,
-#                header = TRUE)
 
 # ----- 2) Create data frame containing all files and observations
 

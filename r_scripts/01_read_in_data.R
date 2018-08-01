@@ -1,4 +1,4 @@
-##### ##### #####     Analysis scrips for behavioral data   ##### ##### #####
+##### ##### #####     Analysis scripts for behavioral data   ##### ##### #####
 #                                 May 2018 
 #                           Read in Baseline data    
 
