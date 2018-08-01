@@ -1,6 +1,6 @@
 ##### ##### #####     Analysis scrips for behavioral data   ##### ##### #####
 #                                 July 2018 
-#                            Read in Block data    
+#                          Read in Main Block data    
 
 # Load nescessary packages
 require(plyr)
