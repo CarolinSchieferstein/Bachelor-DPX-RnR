@@ -1,4 +1,4 @@
-##### ##### #####     Analysis scrips for behavioral data   ##### ##### #####
+##### ##### #####     Analysis scripts for behavioral data   ##### ##### #####
 #                                 August 2018 
 #                        ANOVA FEHLERRATEN MAIN WITHIN
 
@@ -6,23 +6,33 @@
 require(plyr)
 require(dplyr)
 
-### die Daten müssen für die gemischte ANOVA umgebaut werden, muss angeben können für welche Variable der withinFaktor sich wiederholt --> brauche ID
-Baseline_RT_Zuordnung$Trialtype <- as.factor(Baseline_RT_Zuordnung$Trialtype)
-Baseline_RT_Zuordnung$BlockR <- as.factor(Baseline_RT_Zuordnung$BlockR)
-Baseline_RT_Zuordnung$Rew <- as.factor(Baseline_RT_Zuordnung$Rew)
+require(car) # https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
-# Vorrechnung für Baseline
-model1 <- lm(data=Baseline_RT_Zuordnung, m~Trialtype*Rew*Reactiontype)
-ANOVA_Baseline <- anova(model1)
-ANOVA_Baseline
+# https://cran.r-project.org/web/packages/emmeans/index.html
 
-# Vorrechnung für Blocks
-model2 <- lm(data=Block_RnR, m_RT~Trialtype*BlockR*Rew)
-ANOVA_Blocks <- anova(model2)
-ANOVA_Blocks
+# ### die Daten müssen für die gemischte ANOVA umgebaut werden, muss angeben können für welche Variable der withinFaktor sich wiederholt --> brauche ID
+# Baseline_RT_Zuordnung$Trialtype <- as.factor(Baseline_RT_Zuordnung$Trialtype)
+# Baseline_RT_Zuordnung$BlockR <- as.factor(Baseline_RT_Zuordnung$BlockR)
+# Baseline_RT_Zuordnung$Rew <- as.factor(Baseline_RT_Zuordnung$Rew)
+# 
+# # Vorrechnung für Baseline
+# model1 <- lm(data=Baseline_RT_Zuordnung, m~Trialtype*Rew*Reactiontype)
+# ANOVA_Baseline <- anova(model1)
+# ANOVA_Baseline
+# 
+# # Vorrechnung für Blocks
+# model2 <- lm(data=Block_RnR, m_RT~Trialtype*BlockR*Rew)   # m_FR~Trialtype*Phase*Rew
+# ANOVA_Blocks <- anova(model2)
+# ANOVA_Blocks
 
+## as.factor umbauen
+# Hits_sum_plot_All$Rew[Hits_sum_plot_All$Rew==0] <- "Verzögerte Belohnung"
+# Hits_sum_plot_All$Rew[Hits_sum_plot_All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
 
-
+# Effekt oder Dummy Kodierung in FAs_sum2b z.B.     # https://stats.idre.ucla.edu/other/mult-pkg/faq/general/faqwhat-is-effect-coding/
+FAs_sum2b$Trialtype <- as.factor(FAs_sum2b$Trialtype) 
+contrasts(FAs_sum2b$Trialtype) <- contr.sum(4)        # sum macht dass es Effektcoding ist!!!!!
+contrasts(FAs_sum2b$Trialtype) <- contr.treatment(4, base = 1)  # treatment macht dummycoding , base spezifiziert referenzlevel
 
 ##### ANOVA: Daten für jede Person einzeln gemittelt, nach Reactiontypes aufgeteilt (Rew, BlockR, m/ m_RT)   !!!!    ##########
 ##Datensatz:

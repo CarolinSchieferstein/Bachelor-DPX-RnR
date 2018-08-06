@@ -1,5 +1,5 @@
 ##### ##### #####     Analysis scripts for inferential statistics  ##### ##### #####
-#                                    June 2018 
+#                                    August 2018 
 
 # Load helper functions
 setwd("")
@@ -182,7 +182,7 @@ summary(m7)
 #Diagramm: each score on separate line 
 
 #-------Analysis: Personality and Block for RT------ # FB: Unterschiede zwischen Blöcken (R vs nR)?
-                                                     #                  + zwischen Rew-Gruppen sollte kein Unterschied sein
+#                  + zwischen Rew-Gruppen sollte kein Unterschied sein
 #MAE total Score
 m4.2<-lm(RT~MAE_Score*Block, data=Data_full)
 anova(m4.2)
@@ -212,7 +212,7 @@ summary(m8)
 
 
 #---------Correlations in Personality data: all---------------------- # generell gibt es irgendwelche Korrelationen
-                                                                      # einfach zur Sicherheit oder konkrete Frage abklären?
+# einfach zur Sicherheit oder konkrete Frage abklären?
 
 Data_pers_score_all<- Data_pers_score %>% dplyr::select(PE, AC, SP, MAE_Score, FFFS, BIS, BAS_Rew_Int, BAS_Rew_Reac, BAS_Goal_Drive, BAS_Impulsiv, BAS_Score)
 
@@ -340,7 +340,7 @@ Data_reg <- merge (Data_reg, Data_RT)
 
 
 #-----------Regression Analysis-----------------  # immer noch mit IGT-Score? brauch ich das nochmal oder bringt das was neues?
-                                                  # vgl mit ANOVA und HLM und Korrelationen mit FB Informationsgewinn?
+# vgl mit ANOVA und HLM und Korrelationen mit FB Informationsgewinn?
 #Total score by personality/RT in large data frame
 #merge into large data set
 Data_full2 <- merge (Data_score_all, Data_full, by.x = 'VP', by.y = 'VP')
