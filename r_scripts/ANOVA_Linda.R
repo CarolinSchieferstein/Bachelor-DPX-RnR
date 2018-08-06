@@ -14,12 +14,12 @@ rm(pkgs)
 
 
 
-#---------Merge behavioral and personality data---------
+#---------Merge behavioral and personality data--------                 # hier auch meine behavioralen mit FB-Daten mergen?
 Data_full<- merge (Data_card, Data_pers_full, by.x='VP', by.y = 'VP')
 
 Data_full$Block<-as.factor(Data_full$Block)
 
-#---------new data frame for frequency of cards---------
+#---------new data frame for frequency of cards--------- # das brauch ich eigentlich nicht oder?
 
 Data_sum <- Data_full %>% 
   dplyr::group_by(VP, Block, Card) %>% 
@@ -74,7 +74,7 @@ geom_text(aes(label = means), vjust = -0.3)
 
 
 
-#--------Analysis: Anova RT by Block-----------------------------------------------
+#--------Analysis: Anova RT by Block-----------------------------------------------# ab hier brauch ichs eig erst wieder oder?
 
 #---- M1: RT by Block
 Data_full$Block <- as.factor(Data_full$Block)
@@ -88,7 +88,7 @@ summary(mult1)
 
 summarise(group_by(Data_card,Block),mean(RT))              
 
-# -------Analysis: Anova RT by Block and VP-------------------------
+# -------Analysis: Anova RT by Block and VP------------------------- # bei mir Block und Rew-Gruppe?
 
 # M2: RT by Block and VP
 m2<-lm(RT~Block*VP,data=Data_full)                   
@@ -105,7 +105,7 @@ Data_full$VP <- as.factor(Data_full$VP)
 m2f<-allEffects(m2)
 plot(m2f)
 
-# -------Analysis: Anova Frequency Cards by Block and Card--------
+# -------Analysis: Anova Frequency Cards by Block and Card-------- #stattdessen s.o. mit Fehlerraten
 
 #M3: N by Block and Card
 m3<-lm(N~Block*Card, data=Data_sum)
@@ -116,7 +116,7 @@ plot(m3)
 m3f<-allEffects((m3))
 plot(m3f)
 
-# -------Analysis: HLM with Block and VP----------
+# -------Analysis: HLM with Block and VP----------          # s.o. in HLM mit RZ und FR
 
 # Model 1
 fm1 <- lmer(RT ~ Block + (1 | VP), data=Data_full, REML = F)
@@ -153,7 +153,7 @@ sjp.lmer(fm3,
          vars = "Block",
          facet.grid = FALSE)
 
-#------Analysis: Personality for RT-------------------
+#------Analysis: Personality for RT-------------------  #Skalenwerte + deskriptives in Dataframe Fragebogen als columns einfügen
 
 #MAE total Score
 m4<-lm(RT~MAE_Score, data=Data_full)
@@ -181,8 +181,8 @@ summary(m7)
 
 #Diagramm: each score on separate line 
 
-#-------Analysis: Personality and Block for RT------
-
+#-------Analysis: Personality and Block for RT------ # FB: Unterschiede zwischen Blöcken (R vs nR)?
+                                                     #                  + zwischen Rew-Gruppen sollte kein Unterschied sein
 #MAE total Score
 m4.2<-lm(RT~MAE_Score*Block, data=Data_full)
 anova(m4.2)
@@ -211,8 +211,8 @@ summary(m8)
 
 
 
-#---------Correlations in Personality data: all----------------------
-
+#---------Correlations in Personality data: all---------------------- # generell gibt es irgendwelche Korrelationen
+                                                                      # einfach zur Sicherheit oder konkrete Frage abklären?
 
 Data_pers_score_all<- Data_pers_score %>% dplyr::select(PE, AC, SP, MAE_Score, FFFS, BIS, BAS_Rew_Int, BAS_Rew_Reac, BAS_Goal_Drive, BAS_Impulsiv, BAS_Score)
 
@@ -239,8 +239,8 @@ corrplot(matrix2$r, method=c("number"), type="full", order="original", tl.col="b
 
 ?corrplot
 
-#---------Correlations in Personality data: without subscales----------------------
-##problem: more than 4 Variables needed
+#---------Correlations in Personality data: without subscales---------------------- # vorher mit welchen Skalen berechnen?
+##problem: more than 4 Variables needed                                            alle wschl etwas viel eher welche raussuchen?
 
 Data_pers_score_main<- Data_pers_score %>% dplyr::select(MAE_Score, FFFS, BIS, BAS_Score)
 
@@ -268,7 +268,7 @@ corrplot(matrix2$r, method=c("number"), type="full", order="original", tl.col="b
 
 
 
-#-----Plotting by Person
+#-----Plotting by Person                # wäre das hier für die einzelnen VP getrennt? das bräuchte ich dann ja nicht oder?
 
 mplot <-c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)
 BIS<-c(55,64,50,66,49,59,39,49,82,38,65,62,33,47,50,47,60,50,52,74,62,80,48,74,62,59,46,64,47,51)
@@ -290,7 +290,7 @@ legend(1,125,legend=c("BIS","BAS","FFFS","MAE"), col=c("blue","red","dark red", 
 rm(BAS,BIS,FFFS,MAE)
 
 
-#-------------Calculating IGT-Score-------------------------
+#-------------Calculating IGT-Score------------------------- # fällt raus weil anderer Task
 
 
 #turning long into wide format
@@ -339,13 +339,13 @@ Data_reg <- merge (Data_reg, Data_RT)
 
 
 
-#-----------Regression Analysis-----------------
-
+#-----------Regression Analysis-----------------  # immer noch mit IGT-Score? brauch ich das nochmal oder bringt das was neues?
+                                                  # vgl mit ANOVA und HLM und Korrelationen mit FB Informationsgewinn?
 #Total score by personality/RT in large data frame
 #merge into large data set
 Data_full2 <- merge (Data_score_all, Data_full, by.x = 'VP', by.y = 'VP')
 
-m1<-lm(IGT_Score_all~Block*BAS_Score*BIS*MAE_Score, data=Data_full2)
+m1<-lm(IGT_Score_all~Block*BAS_Score*BIS*MAE_Score, data=Data_full2)            # ist aber noch IGT-Score oder? dann fällts weg
 summary(m4)
 
 m2<-lm(IGT_Score_all~RT, data=Data_full2)
@@ -475,7 +475,7 @@ m4<-lm(RT_sum~Block, data = Data_reg)
 summary(m4)
 anova(m4)
 
-#-------------Correlation matrix including IGT Score------
+#-------------Correlation matrix including IGT Score------ # fällt weg weil anderer Task, letztes auch oder?
 Data_pers_score_all<- Data_pers_score %>% dplyr::select(PE, AC, SP, MAE_Score, FFFS, BIS, BAS_Rew_Int, BAS_Rew_Reac, BAS_Goal_Drive, BAS_Impulsiv, BAS_Score, IGT_Score_all) 
 
 matrix2<-rcorr(as.matrix(Data_pers_score_all))
