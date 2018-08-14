@@ -10,6 +10,70 @@ require(car) # https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-ex
 
 # https://cran.r-project.org/web/packages/emmeans/index.html
 
+
+##### VON LINDA #####
+
+#--------Analysis: Anova RT by Block----------------------------------------------- mit anova() 
+## Anova auf Unterschiede zwischen Blöcken wäre bei mir --> macht R/nR/Baseline einen Unterschied deskriptiv hab ich das schon,
+## wäre ein Test auf die Liniendiagramme des deskriptiven --> wie könnte ich in den Diagrammen Signifikanzen einzeichnen?
+
+#---- M1: RT by Block
+Data_full$Block <- as.factor(Data_full$Block)
+m1<-lm(RT~Block,data=Data_full)                            
+summary(m1)
+anova(m1)
+
+# Post-hoc Test
+mult1<- glht(m1,mcp(Block="Tukey"))             
+summary(mult1)
+
+summarise(group_by(Data_card,Block),mean(RT))              
+
+###############
+
+# -------Analysis: Anova RT by Block and VP------------------------- 
+## brauch ich nicht für einzelne VP sondern für die Rew-Gruppen (direkt/verzögert)
+
+# M2: RT by Block and VP
+m2<-lm(RT~Block*VP,data=Data_full)                   
+summary(m2)
+anova(m2)
+
+# simple effects analysis for interaction Block and VP
+testInteractions(m2)
+emmeans(m2, pairwise ~ VP)      #######  EMMEANS !!!! #####
+
+
+# plot effects for M2
+Data_full$VP <- as.factor(Data_full$VP)
+m2f<-allEffects(m2)
+plot(m2f)
+
+############
+
+# -------Analysis: Anova Frequency Cards by Block and Card--------
+## bei mir hier statt RT zu Frequency cards wechseln RT -> FR wechseln und auch hier Blockunterschiede und Kombi mit Rew rechnen
+
+#M3: N by Block and Card
+m3<-lm(N~Block*Card, data=Data_sum)
+anova(m3)
+plot(m3)
+
+# plot effects for M3
+m3f<-allEffects((m3))
+plot(m3f)
+
+
+############
+
+###### HIERNACH BEI LINDA HLM UND RECHNUNGEN MIT FB-SCORES -> BRAUCHE ICH AUCH: FÜR HAUPTSCORES UND BAS UNTERTEILT !
+###### FB-SCORES: GENERELL UNTERSCHIEDE ZWISCHEN DEN GRUPPEN EHER DESKRIPTIV?
+###### DANN ANALYSE IN KOMBI MIT BLOCK, DANN REW DAZU
+
+###### BEI MIR AUCH GENERELLE KORRELATIONEN DER PERSÖNLICHKEITSDATEN PRÜFEN ODER REICHT DAS AUCH OHNE?
+
+##########################
+
 # ### die Daten müssen für die gemischte ANOVA umgebaut werden, muss angeben können für welche Variable der withinFaktor sich wiederholt --> brauche ID
 # Baseline_RT_Zuordnung$Trialtype <- as.factor(Baseline_RT_Zuordnung$Trialtype)
 # Baseline_RT_Zuordnung$BlockR <- as.factor(Baseline_RT_Zuordnung$BlockR)
