@@ -6,11 +6,59 @@
 require(plyr)
 require(dplyr)
 
-require(car) # https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
+require(car)
+library(emmeans)
+require(emmeans)
+
+# https://mcfromnz.wordpress.com/2011/03/02/anova-type-iiiiii-ss-explained/
 
 # https://cran.r-project.org/web/packages/emmeans/index.html
 
 
+#--------Analysis: Anova m_FR by Trialtype----------------------------------------------- 
+
+#---- M1: m_FR by Trialtype
+FAs_sum_plot_All$Phase <- as.factor(FAs_sum_plot_All$Phase)
+
+
+m1<-lm(m_FR~Trialtype,data=FAs_sum_plot_All)                            
+summary(m1)
+anova(m1)
+# 
+# # Post-hoc Test
+# mult1<- glht(m1,mcp(Block="Tukey"))               irgendein pkg fehlt ??  
+# summary(mult1)
+
+# summarise(group_by(Data_card,Block),mean(RT))              was ist Data_card bei mir?
+
+###############
+
+# -------Analysis: Anova m_FR by Trialtype and Rew------------------------- 
+
+# M2: m_FR by Trialtype and Rew
+m2<-lm(m_FR~Trialtype*Rew,data=FAs_sum_plot_All)                   
+summary(m2)
+anova(m2)
+
+# simple effects analysis for interaction Trialtype and Rew
+testInteractions(m2)
+emmeans(m2, pairwise ~ Rew)
+                                                                                ###### ????????????????????????????? #######
+###############
+
+# -------Analysis: Anova m_FR by Trialtype, Rew and Phase--------
+
+#M3: m_FR by Trialtype, Rew and Phase
+m3<-lm(m_FR~Trialtype*Rew*Phase, data=FAs_sum_plot_All)
+summary(m3)
+anova(m3)
+
+# simple effects analysis for interaction Trialtype, Phase and Rew
+testInteractions(m3)
+emmeans(m3, pairwise ~ Rew*Phase)
+
+
+#####################
 ##### VON LINDA #####
 
 #--------Analysis: Anova RT by Block----------------------------------------------- mit anova() 
