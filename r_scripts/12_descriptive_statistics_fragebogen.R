@@ -81,17 +81,29 @@ Fragebogen_sum_grouped<- Fragebogen_Skalen %>% group_by(Rew, Perm) %>%
                                                        sd_DK = sd(DK)
                                                        )
 
-
-# # Plotten??
+# Balkendiagramm
+# barplot(c(Fragebogen_sum_grouped$m_BAS, Fragebogen_sum_grouped$m_BIS, Fragebogen_sum_grouped$m_FFFS),
+#         col = c("red", "blue", "green"),
+#         main = "Mittelwerte der Hauptskalen des RST-PQ",
+#         border = "black")
+#       
 # require(ggplot2)
+# ggplot(Fragebogen_sum_grouped) + 
+#   geom_bar(stat = "identity") + 
+#   facet_wrap(~Rew, scales = "free_y")                     ############################?????????????????????????????????????????????????#################
+
+
+
+
+
+
+
+
 # ggplot(FAs_sum_grouped, aes(x=Trialtype, y=m_FR)) + 
 #   geom_errorbar(aes(ymin=m_FR-se_FR, ymax=m_FR+se_FR), colour="black", width=.1, position=position_dodge(.5)) +
 #   geom_line(position=position_dodge(.5)) +
 #   geom_point(position=position_dodge(.5), size=3)
-
-
-
-# 
+#
 # require(ggplot2)
 # ggplot(FAs_sum_plot_All, aes(x=Trialtype, y=m_FR, color = Phase, group = Phase)) + 
 #   geom_errorbar(aes(ymin=m_FR-se_FR, ymax=m_FR+se_FR), 
