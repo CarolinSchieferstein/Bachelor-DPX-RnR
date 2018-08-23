@@ -1,3 +1,67 @@
+##### ##### #####     Analysis scripts for behavioral data   ##### ##### #####
+#                                 August 2018 
+#                          ANOVA REAKTIONSZEITEN MAIN
+
+# -- Helper functions ----
+getPacks <- function( packs ) {
+  
+  # Check wich packages are not intalled and install them
+  if ( sum(!packs %in% installed.packages()[, 'Package'])) {
+    install.packages( packs[ which(!packs %in% installed.packages()[, 'Package']) ], 
+                      dependencies = T)
+  }
+  
+  # Require all packages
+  sapply(packs, require, character.only =  T)
+  
+}
+
+# -- Load necessary packages
+pkgs <- c('dplyr', 'plyr', 
+          'emmeans', 'car', 'sjstats', 'ggplot2')
+getPacks(pkgs)
+rm(pkgs)
+
+# Dataframe entsprechend FAs_sum_All erstellen
+Hits$ID <- as.factor(Hits$ID)
+Hits$Rew <- as.factor(Hits$Rew)
+Hits$Perm <- as.factor(Hits$Perm)
+Hits$Phase <- as.factor(Hits$Phase)
+Hits$Trialtype <- as.factor(Hits$Trialtype)
+
+Hits_B$ID <- as.factor(Hits_B$ID)
+Hits_B$Rew <- as.factor(Hits_B$Rew)
+Hits_B$Perm <- as.factor(Hits_B$Perm)
+Hits_B$Phase <- as.factor(Hits_B$Phase)
+Hits_B$Trialtype <- as.factor(Hits_B$Trialtype)
+
+Hits_All <- rbind(Hits, Hits_B)
+
+Hits_sum_All <- Hits_All %>% dplyr::group_by(ID, Trialtype, Rew, Phase) %>%
+  dplyr::summarise(m_RT = mean(RT),
+                  n = sum(!is.na(RT)))
+
+# Effektkodierung: Alle Fehlerraten mit Gesamtdurchschnitt vergleichen (sonst default = Dummy-Kodierung)
+contrasts(Hits_sum_All$Trialtype) <- contr.sum(4); contrasts(Hits_sum_All$Trialtype)
+contrasts(Hits_sum_All$Phase) <- contr.sum(3); contrasts(Hits_sum_All$Phase)
+
+# Modell direkt auf Daten ohne summary
+RT_mod_log <- lm(log(m_RT) ~ Trialtype*Rew*Phase, data = Hits_sum_All)
+RT_mod_no_log <- lm(m_RT ~ Trialtype*Rew*Phase, data = Hits_sum_All)   # ausprobieren, ob Rechnung mit oder ohne log besser
+hist(Hits_sum_All$m_RT)
+hist(log(Hits_sum_All$m_RT))     # besser ohne log, weil auch normalverteilt und s.u.
+sjstats::r2(RT_mod_log)
+sjstats::r2(RT_mod_no_log)   # Modelfit für log und ohne log Modell -> ohne log besser
+RT_a_mod<- car::Anova(RT_mod_no_log, type=3); RT_a_mod # Modell für ANOVA, type=3 -> Effekte unabhängig voneinander geprüft
+eta_sq(RT_a_mod, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
+
+emmeans::emmeans(RT_mod_no_log, pairwise ~ Trialtype | Rew )
+emmeans::emmip(RT_mod_no_log, ~ Trialtype | Rew, type = "response", CIs = T)
+
+
+
+
+
 ############### VON LINDA ##################
 # #--------Merge behavioral and personality data---------
 # Data_full<- merge (Data_card, Data_pers_full, by.x='VP', by.y = 'VP')
