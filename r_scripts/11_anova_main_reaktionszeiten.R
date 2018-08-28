@@ -22,7 +22,7 @@ pkgs <- c('dplyr', 'plyr',
 getPacks(pkgs)
 rm(pkgs)
 
-# Dataframe entsprechend FAs_sum_All erstellen
+# Dataframe entsprechend FAs_sum_All erstellen: Baseline und Blocks zusammenpacken
 Hits$ID <- as.factor(Hits$ID)
 Hits$Rew <- as.factor(Hits$Rew)
 Hits$Perm <- as.factor(Hits$Perm)
@@ -39,7 +39,8 @@ Hits_All <- rbind(Hits, Hits_B)
 
 Hits_sum_All <- Hits_All %>% dplyr::group_by(ID, Trialtype, Rew, Phase) %>%
   dplyr::summarise(m_RT = mean(RT),
-                  n = sum(!is.na(RT)))
+                   se_RT=sd(RT)/sqrt(sum(!is.na(RT))),
+                   n = sum(!is.na(RT)))
 
 # Effektkodierung: Alle Fehlerraten mit Gesamtdurchschnitt vergleichen (sonst default = Dummy-Kodierung)
 contrasts(Hits_sum_All$Trialtype) <- contr.sum(4); contrasts(Hits_sum_All$Trialtype)
@@ -55,10 +56,22 @@ sjstats::r2(RT_mod_no_log)   # Modelfit für log und ohne log Modell -> ohne log
 RT_a_mod<- car::Anova(RT_mod_no_log, type=3); RT_a_mod # Modell für ANOVA, type=3 -> Effekte unabhängig voneinander geprüft
 eta_sq(RT_a_mod, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
 
-emmeans::emmeans(RT_mod_no_log, pairwise ~ Trialtype | Rew )
-emmeans::emmip(RT_mod_no_log, ~ Trialtype | Rew, type = "response", CIs = T)
-
-
+emmeans::emmeans(RT_mod_no_log, pairwise ~ Trialtype | Rew , adjust = "fdr") # paarweise Vergleiche aller Stufen
+emmeans::emmip(RT_mod_no_log, Rew ~ Trialtype, type = "response", CIs = T) + # Vorhersage erwarteter RT nach Modell
+  theme_bw() + 
+  labs(y = "Vorhergesagte Reaktionszeiten",
+       x = "Trialtypen",
+       title = "Modellvorhersage Reaktionszeiten Haupttestung") + 
+  theme(strip.background = element_blank(), 
+        strip.text= element_text(color= "black", size = 12),
+        axis.text = element_text(color='black', size = 12),
+        axis.title = element_text(color='black', size = 13),
+        plot.title = element_text(hjust = .5),
+        legend.text = element_text(size = 12),
+        legend.title = element_blank()) + 
+  geom_line(position = position_dodge(.1), size = 1) +
+  geom_point(position = position_dodge(.1), size = 3)
+  
 
 
 
