@@ -55,6 +55,7 @@ sjstats::r2(RT_mod_log)
 sjstats::r2(RT_mod_no_log)   # Modelfit für log und ohne log Modell -> ohne log besser
 RT_a_mod<- car::Anova(RT_mod_no_log, type=3); RT_a_mod # Modell für ANOVA, type=3 -> Effekte unabhängig voneinander geprüft
 eta_sq(RT_a_mod, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
+car::qqPlot(resid(RT_mod_no_log))
 
 emmeans::emmeans(RT_mod_no_log, pairwise ~ Trialtype | Rew , adjust = "fdr") # paarweise Vergleiche aller Stufen
 emmeans::emmip(RT_mod_no_log, Rew ~ Trialtype, type = "response", CIs = T) + # Vorhersage erwarteter RT nach Modell

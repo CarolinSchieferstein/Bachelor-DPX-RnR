@@ -69,6 +69,7 @@ sjstats::r2(RT_mod_log_P1)
 sjstats::r2(RT_mod_no_log_P1)   # Modelfit für log und ohne log Modell -> beides ähnlich aber NV für log besser!
 RT_a_mod_P1<- car::Anova(RT_mod_log_P1, type=3); RT_a_mod_P1 # Modell für ANOVA, type=3 -> Effekte unabhängig voneinander geprüft
 eta_sq(RT_a_mod_P1, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
+car::qqPlot(resid(RT_mod_log_P1))
 
 emmeans::emmeans(RT_mod_log_P1, pairwise ~ Trialtype , adjust = "fdr") # paarweise Vergleiche aller Stufen
 emmeans::emmip(RT_mod_log_P1, ~ Trialtype, type = "response", CIs = T) + # Vorhersage erwarteter RT nach Modell
@@ -97,6 +98,7 @@ sjstats::r2(RT_mod_log_P2)
 sjstats::r2(RT_mod_no_log_P2)   # Modelfit für log und ohne log Modell -> ohne log besser
 RT_a_mod_P2 <- car::Anova(RT_mod_no_log_P2, type=3); RT_a_mod_P2 # Modell für ANOVA, type=3 -> Effekte unabhängig voneinander geprüft
 eta_sq(RT_a_mod_P2, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
+car::qqPlot(resid(RT_mod_log_P2))
 
 emmeans::emmeans(RT_mod_no_log_P2, pairwise ~ Trialtype , adjust = "fdr") # paarweise Vergleiche aller Stufen
 emmeans::emmip(RT_mod_no_log_P2, ~ Trialtype, type = "response", CIs = T) + # Vorhersage erwarteter RT nach Modell

@@ -52,6 +52,7 @@ sjstats::r2(FR_mod_log_P1)
 sjstats::r2(FR_mod_no_log_P1)   # Modelfit für log und nicht log Modell -> log besser
 FR_a_mod_P1<- car::Anova(FR_mod_log_P1, type=3, singular.ok = TRUE); FR_a_mod_P1 # Modell für ANOVA, type=3 -> Effekte unabhängig
 eta_sq(FR_a_mod_P1, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
+car::qqPlot(resid(FR_mod_log_P1))
 
 emmeans::emmeans(FR_mod_log_P1, pairwise ~ Trialtype , adjust = "fdr") # paarweise Vergleiche
 emmeans::emmip(FR_mod_log_P1, ~ Trialtype, type = "response", CIs = T) + # Vorhersage erwarteter FR nach Modell
@@ -77,7 +78,8 @@ hist(log(FAs_sum2_All$Fehlerrate))     # besser mit log, weil dann normalverteil
 sjstats::r2(FR_mod_log_P2)
 sjstats::r2(FR_mod_no_log_P2)   # Modelfit für log und nicht log Modell -> log besser
 FR_a_mod_P2 <- car::Anova(FR_mod_log_P2, type=3, singular.ok = TRUE); FR_a_mod_P2 # Modell für ANOVA, type=3->Effekte unabhängig
-eta_sq(FR_a_mod, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
+eta_sq(FR_a_mod_P2, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
+car::qqPlot(resid(FR_mod_log_P2))
 
 emmeans::emmeans(FR_mod_log_P2, pairwise ~ Trialtype , adjust = "fdr") # paarweise Vergleiche
 emmeans::emmip(FR_mod_log_P2, ~ Trialtype, type = "response", CIs = T) + # Vorhersage erwarteter FR nach Modell

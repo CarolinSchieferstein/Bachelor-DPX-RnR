@@ -182,7 +182,7 @@ ggplot(Hits2b_sum, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) +
 require(plyr)
 require(dplyr)
 
-Hits1_sum_plot <- Hits1_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
+Hits1_sum_plot <- Hits_sum1 %>% dplyr::group_by(Trialtype, Rew, Phase)
 Hits1b_sum_plot <- Hits1b_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
 
 Hits1_sum_plot_All <- rbind(Hits1_sum_plot, Hits1b_sum_plot)
@@ -190,7 +190,7 @@ Hits1_sum_plot_All <- rbind(Hits1_sum_plot, Hits1b_sum_plot)
 Hits1_sum_plot_All$Rew[Hits1_sum_plot_All$Rew==0] <- "Verzögerte Belohnung"
 Hits1_sum_plot_All$Rew[Hits1_sum_plot_All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
 
-Hits2_sum_plot <- Hits2_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
+Hits2_sum_plot <- Hits_sum2 %>% dplyr::group_by(Trialtype, Rew, Phase)
 Hits2b_sum_plot <- Hits2b_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
 
 Hits2_sum_plot_All <- rbind(Hits2_sum_plot, Hits2b_sum_plot)
