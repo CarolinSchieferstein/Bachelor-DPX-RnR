@@ -60,6 +60,7 @@ contrasts(Hits_sum2_All$Trialtype) <- contr.sum(4); contrasts(Hits_sum2_All$Tria
 contrasts(Hits_sum2_All$Phase) <- contr.sum(3); contrasts(Hits_sum2_All$Phase)
 
 ##### -- FÜR PILOT 1 -- Modell direkt auf Daten ohne summary #####
+####
 RT_mod_log_P1 <- lm(log(m_RT) ~ Trialtype*Phase, data = Hits_sum1_All)
 RT_mod_no_log_P1 <- lm(m_RT ~ Trialtype*Phase, data = Hits_sum1_All)   # ausprobieren, ob Rechnung mit oder ohne log besser
 hist(Hits_sum1_All$m_RT)
@@ -87,6 +88,7 @@ emmeans::emmip(RT_mod_log_P1, ~ Trialtype, type = "response", CIs = T) + # Vorhe
 
 
 ##### -- FÜR PILOT 2 -- Modell direkt auf Daten ohne summary #####
+####
 RT_mod_log_P2 <- lm(log(m_RT) ~ Trialtype*Phase, data = Hits_sum2_All)
 RT_mod_no_log_P2 <- lm(m_RT ~ Trialtype*Phase, data = Hits_sum2_All)   # ausprobieren, ob Rechnung mit oder ohne log besser
 hist(Hits_sum2_All$m_RT)

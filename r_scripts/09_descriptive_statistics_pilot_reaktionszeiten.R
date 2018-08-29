@@ -64,13 +64,13 @@ write.table(Miss2,
 # COMPUTE DESCRIPTIVE STATISTICS FOR BASELINE----
 
 # Hits rauslesen, group_by Trialtype , Rew und perm aufteilen, nicht nach Reactiontype, weil nur Hits drin! + summarise
-Hits1_sum <- Hits1 %>% group_by(Trialtype, Rew, Phase) %>%
-  summarise(m_RT = mean(RT),
+Hits_sum1 <- Hits1 %>% dplyr::group_by(Trialtype, Rew, Phase) %>%
+  dplyr::summarise(m_RT = mean(RT),
             sd_RT = sd(RT),
             se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
             n = sum(!is.na(RT)))
-Hits2_sum <- Hits2 %>% group_by(Trialtype, Rew, Phase) %>%
-  summarise(m_RT = mean(RT),
+Hits_sum2 <- Hits2 %>% dplyr::group_by(Trialtype, Rew, Phase) %>%
+  dplyr::summarise(m_RT = mean(RT),
             sd_RT = sd(RT),
             se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
             n = sum(!is.na(RT)))
@@ -152,14 +152,14 @@ write.table(Miss2b,
 # COMPUTE DESCRIPTIVE STATISTICS FOR BLOCKS----
 
 # Hits rauslesen, group_by Trialtype , Rew und perm aufteilen, nicht nach Reactiontype, weil nur Hits drin! + summarise
-Hits1b_sum <- Hits1b %>% group_by(Trialtype, Rew, Phase) %>%
-  summarise(m_RT = mean(RT),
+Hits1b_sum <- Hits1b %>% dplyr::group_by(Trialtype, Rew, Phase) %>%
+  dplyr::summarise(m_RT = mean(RT),
             sd_RT = sd(RT),
             se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
             n = sum(!is.na(RT)))
 
-Hits2b_sum <- Hits2b %>% group_by(Trialtype, Rew, Phase) %>%
-  summarise(m_RT = mean(RT),
+Hits2b_sum <- Hits2b %>% dplyr::group_by(Trialtype, Rew, Phase) %>%
+  dplyr::summarise(m_RT = mean(RT),
             sd_RT = sd(RT),
             se_RT = sd(RT)/sqrt(sum(!is.na(RT))),
             n = sum(!is.na(RT)))
@@ -182,16 +182,16 @@ ggplot(Hits2b_sum, aes(x=Trialtype, y=m_RT, color = Phase, group = Phase)) +
 require(plyr)
 require(dplyr)
 
-Hits1_sum_plot <- Hits1_sum %>% group_by(Trialtype, Rew, Phase)
-Hits1b_sum_plot <- Hits1b_sum %>% group_by(Trialtype, Rew, Phase)
+Hits1_sum_plot <- Hits1_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
+Hits1b_sum_plot <- Hits1b_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
 
 Hits1_sum_plot_All <- rbind(Hits1_sum_plot, Hits1b_sum_plot)
 
 Hits1_sum_plot_All$Rew[Hits1_sum_plot_All$Rew==0] <- "Verzögerte Belohnung"
 Hits1_sum_plot_All$Rew[Hits1_sum_plot_All$Rew==1] <- "Direkte Belohnung"      #### umbenannt, damit es im Plot erklärend darüber steht statt nur Zahlen
 
-Hits2_sum_plot <- Hits2_sum %>% group_by(Trialtype, Rew, Phase)
-Hits2b_sum_plot <- Hits2b_sum %>% group_by(Trialtype, Rew, Phase)
+Hits2_sum_plot <- Hits2_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
+Hits2b_sum_plot <- Hits2b_sum %>% dplyr::group_by(Trialtype, Rew, Phase)
 
 Hits2_sum_plot_All <- rbind(Hits2_sum_plot, Hits2b_sum_plot)
 

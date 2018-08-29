@@ -34,11 +34,11 @@ contrasts(FAs_sum_All$Phase) <- contr.sum(3); contrasts(FAs_sum_All$Phase)
 
 # Modell direkt auf Daten ohne summary
 FR_mod_log <- lm(log(Fehlerrate) ~ Trialtype*Rew*Phase, data = FAs_sum_All)
-# FR_mod_no_log <- lm(Fehlerrate ~ Trialtype*Rew*Phase, data = FAs_sum_All)   # ausprobieren, ob Rechnung mit oder ohne log besser
-# hist(FAs_sum_All$Fehlerrate)
+FR_mod_no_log <- lm(Fehlerrate ~ Trialtype*Rew*Phase, data = FAs_sum_All)   # ausprobieren, ob Rechnung mit oder ohne log besser
+hist(FAs_sum_All$Fehlerrate)
 hist(log(FAs_sum_All$Fehlerrate))     # besser mit log, weil dann normalverteilt und s.u.
 sjstats::r2(FR_mod_log)
-# sjstats::r2(FR_mod_no_log)   # Modelfit für log und nicht log Modell -> log besser
+sjstats::r2(FR_mod_no_log)   # Modelfit für log und nicht log Modell -> log besser
 FR_a_mod<- car::Anova(FR_mod_log, type=3, singular.ok = TRUE); FR_a_mod # Modell für ANOVA, type=3 -> Effekte unabhängig geprüft
 eta_sq(FR_a_mod, partial=F)  # Effektgröße Eta-Quadrat (hat Konventionen)
 car::qqPlot(resid(FR_mod_log))
