@@ -49,17 +49,17 @@ write.table(Miss,
 # COMPUTE DESCRIPTIVE STATISTICS FOR BASELINE----
 
 # Trialzahlen 
-total_trials <- RT_Zuordnung%>%group_by(ID, Trialtype, Rew, Phase)%>% summarise(total=sum(!is.na(Trialnr)))
+total_trials <- RT_Zuordnung %>% dplyr::group_by(ID, Trialtype, Rew, Phase) %>% dplyr::summarise(total=sum(!is.na(Trialnr)))
 
 # Incorrects summary: mean und n
-FAs_sum<- FAs %>% group_by(ID, Trialtype, Rew, Phase) %>% summarise(m_RT = mean(RT), n = sum(!is.na(RT)))
+FAs_sum<- FAs %>% dplyr::group_by(ID, Trialtype, Rew, Phase) %>% dplyr::summarise(m_RT = mean(RT), n = sum(!is.na(RT)))
 # FAs_sum mit Daten mit gezählten Trials zusammen
 FAs_sum <- merge(FAs_sum, total_trials, c("ID", "Trialtype", "Rew", "Phase"))
 # FEHLERRATE berechnen
 FAs_sum <- mutate(FAs_sum, Fehlerrate = n/total)
 # Mittlere Fehlerrate und SE
-FAs_sum_grouped <- FAs_sum %>% group_by(Trialtype) %>%
-                        summarise(m_FR=mean(Fehlerrate),
+FAs_sum_grouped <- FAs_sum %>% dplyr::group_by(Trialtype) %>%
+                        dplyr::summarise(m_FR=mean(Fehlerrate),
                                   se_FR=sd(Fehlerrate)/sqrt(sum(!is.na(Fehlerrate))))
 # FEHLERRATE Plotten
 require(ggplot2)

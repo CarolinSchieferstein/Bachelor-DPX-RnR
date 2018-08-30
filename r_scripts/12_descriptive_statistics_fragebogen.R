@@ -27,7 +27,20 @@ Fragebogen_Skalen <- select(Fragebogen_Skalen, ID:Beruf, BI:DK, X01:X84, Dauerge
 
 # COMPUTE DESCRIPTIVE STATISTICS FOR QUESTIONNAIRE----
 
-Fragebogen_sum_all<- Fragebogen_Skalen %>% summarise(m_age = mean(age) ,
+Fragebogen_sum_scalemeans<- Fragebogen_Skalen %>% dplyr::summarise(m_BI = mean(BI) ,
+                                                            m_ZAP = mean(ZAP) ,
+                                                            m_BR = mean(BR) ,
+                                                            m_Imp = mean(Imp) ,
+                                                            m_BAS = mean(BAS) ,
+                                                            m_FFFS = mean(FFFS) ,
+                                                            m_BIS = mean(BIS) ,
+                                                            m_Panik = mean(Panik) ,
+                                                            m_DK = mean(DK)
+                                                            )
+
+
+
+Fragebogen_sum_all<- Fragebogen_Skalen %>% dplyr::summarise(m_age = mean(age) ,
                                                  sd_age = sd(age) ,
                                                  m_sex = mean(sex) ,
                                                  sd_sex = sd(sex) ,
@@ -54,8 +67,8 @@ Fragebogen_sum_all<- Fragebogen_Skalen %>% summarise(m_age = mean(age) ,
                                                  )
 
 
-Fragebogen_sum_grouped<- Fragebogen_Skalen %>% group_by(Rew, Perm) %>%
-                                              summarise(m_age = mean(age) ,
+Fragebogen_sum_grouped<- Fragebogen_Skalen %>% dplyr::group_by(Rew, Perm) %>%
+                                              dplyr::summarise(m_age = mean(age) ,
                                                        sd_age = sd(age) ,
                                                        m_sex = mean(sex) ,
                                                        sd_sex = sd(sex) ,
@@ -80,53 +93,31 @@ Fragebogen_sum_grouped<- Fragebogen_Skalen %>% group_by(Rew, Perm) %>%
                                                        m_DK = mean(DK) ,
                                                        sd_DK = sd(DK)
                                                        )
+## Plot
+# dafür Fragebogen_sum_all in Spalten statt Zeilen, dass eine Spalte jeweils BAS/BIS etc sagt und die zweite Spalte den Wert
 
-# Balkendiagramm
-# barplot(c(Fragebogen_sum_grouped$m_BAS, Fragebogen_sum_grouped$m_BIS, Fragebogen_sum_grouped$m_FFFS),
-#         col = c("red", "blue", "green"),
-#         main = "Mittelwerte der Hauptskalen des RST-PQ",
-#         border = "black")
-#       
-# require(ggplot2)
-# ggplot(Fragebogen_sum_grouped) + 
-#   geom_bar(stat = "identity") + 
-#   facet_wrap(~Rew, scales = "free_y")                     ############################?????????????????????????????????????????????????#################
+Fragebogen_plot <- tidyr::gather(Fragebogen_sum_scalemeans)
+Fragebogen_plot$key <-  as.factor(Fragebogen_plot$key)
 
 
+# print(levels(Fragebogen_plot$key))  ## This will show the levels of x are "Levels: a b c d e"
+## Reorder the levels:
+## note, if x is not a factor use levels(factor(x))
+Fragebogen_plot$key <- factor(Fragebogen_plot$key,levels(Fragebogen_plot$key)[c(2,9,4,7,1,3,6,5,8)])
+# print(levels(Fragebogen_plot$key))
 
+require(ggplot2)
+# install.packages("viridis")
+require(viridis)
+ggplot(Fragebogen_plot, aes(x = key, y = value, fill = key)) + 
+  geom_line(position = position_dodge(.5)) +
+  coord_cartesian(ylim = c(10:90)) +
+  scale_y_log10(breaks = seq(10,90,10)) +
+  geom_bar(position = position_dodge(.5), size = 3, stat = "identity") + 
+  scale_fill_viridis(option = "D", discrete = TRUE)
 
-
-
-
-
-# ggplot(FAs_sum_grouped, aes(x=Trialtype, y=m_FR)) + 
-#   geom_errorbar(aes(ymin=m_FR-se_FR, ymax=m_FR+se_FR), colour="black", width=.1, position=position_dodge(.5)) +
-#   geom_line(position=position_dodge(.5)) +
-#   geom_point(position=position_dodge(.5), size=3)
-#
-# require(ggplot2)
-# ggplot(FAs_sum_plot_All, aes(x=Trialtype, y=m_FR, color = Phase, group = Phase)) + 
-#   geom_errorbar(aes(ymin=m_FR-se_FR, ymax=m_FR+se_FR), 
-#                 colour="black", 
-#                 width=.25,      # Breite der Querstriche am Ende der Fehlerbalken
-#                 position=position_dodge(.25),
-#                 size = .6) +
-#   geom_line(position=position_dodge(.25), size = 1) +
-#   geom_point(position=position_dodge(.25), size = 3) + 
-#   facet_wrap(~ Rew, ncol = 2, scales = 'free_y') +      # free_y --> y-Achse an beide teile einzeln
-#   coord_cartesian(ylim = c(0, .35)) +         # Range der Y-Achse
-#   theme_classic() +     # weißer Hintergrund etc., gibt viele einfach ausprobieren, welches man möchte
-#   labs(x = 'Trialtype', y = 'Mittlere Fehlerrate', title = "Mittlere Fehlerrate in der Haupttestung") +
-#   theme(strip.background = element_blank(), 
-#         strip.text= element_text(color= "black", size = 12),
-#         axis.text = element_text(color='black', size = 12),
-#         axis.title = element_text(color='black', size = 13),
-#         plot.title = element_text(hjust = .5),
-#         legend.text = element_text(size = 12),
-#         legend.title = element_blank())
-# 
-# # Save for later use
-# write.table(FAs_sum_plot_All, '~/Desktop/Bachelor/Daten/R_Frames/FAs_sum_plot_All.txt', row.names = F, sep = '\t')
+# Save for later use
+write.table(Fragebogen_plot, '~/Desktop/Bachelor/Daten/R_Frames/Fragebogen_plot.txt', row.names = F, sep = '\t')
 
 ########################################################################################################################
 ########################################################################################################################
