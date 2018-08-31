@@ -67,6 +67,36 @@ names(Fragebogen_corr_RT)[12:23] <- c("AX-RT B", "AX-RT nR", "AX-RT R",
                                       "AY-RT B", "AY-RT nR", "AY-RT R",
                                       "BY-RT B", "BY-RT nR", "BY-RT R")
 
+
+## Korrelationen alles RT
+require(psych)
+M_RT <- corr.test(Fragebogen_corr_RT[, -c(1,6,11:23)], adjust = 'none')
+diag(M_RT$r) = NA
+diag(M_RT$p) = NA
+
+require(corrplot)
+require(RColorBrewer)
+corrplot(M_RT$r, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "number", 
+         number.cex = 1,
+         order = "hclust",
+         addrect = 3,
+         #type = 'upper',
+         #addCoef.col = "black", 
+         #sig.level = 0.05, 
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         #insig = "label_sig",
+         #sig.level = c(.001, .01, .05), pch.cex = 1.5, 
+         #pch.col = "white", 
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+
+
 ## Korrelationen für AX und AY
 
 require(psych)
@@ -120,3 +150,180 @@ corrplot(M_RT_B$r, p.mat = M_RT_B$p,
          na.label.col = NA, 
          na.label = NA, 
          cl.ratio = .25, cl.length = 11, cl.cex = 1)
+
+
+##### Saving Plots #####
+
+# Open a pdf file
+pdf("./Desktop/corrplot_RT_B.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+corrplot(M_RT_B$r, p.mat = M_RT_B$p, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "circle", 
+         number.cex = 1, 
+         type = 'upper',
+         #addCoef.col = "black", 
+         #sig.level = 0.05, 
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         insig = "label_sig",
+         sig.level = c(.001, .01, .05), pch.cex = 1.5, 
+         pch.col = "white", 
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/corrplot_RT_A.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+corrplot(M_RT_A$r, p.mat = M_RT_A$p, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "circle", 
+         number.cex = 1, 
+         type = 'upper',
+         #addCoef.col = "black", 
+         #sig.level = 0.05, 
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         insig = "label_sig",
+         sig.level = c(.001, .01, .05), pch.cex = 1.5, 
+         pch.col = "white", 
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+# Close the pdf file
+dev.off()
+
+
+# Open a pdf file
+pdf("./Desktop/corrplot_FR.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+corrplot(M_FR$r, p.mat = M_FR$p, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "circle", 
+         number.cex = 1, 
+         type = 'upper',
+         #addCoef.col = "black", 
+         #sig.level = 0.05, 
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         insig = "label_sig",
+         sig.level = c(.001, .01, .05), pch.cex = 1.5, 
+         pch.col = "white", 
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+# Close the pdf file
+dev.off()
+
+
+# Open a pdf file
+pdf("./Desktop/cluster_FB_num.pdf", width = 8 , height = 8) 
+# 2. Create a plot
+corrplot(M_RT$r, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "number", 
+         number.cex = 1,
+         order = "hclust",
+         addrect = 3,
+         #type = 'upper',
+         #addCoef.col = "black", 
+         #sig.level = 0.05, 
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         #insig = "label_sig",
+         #sig.level = c(.001, .01, .05), pch.cex = 1.5, 
+         #pch.col = "white", 
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/cluster_FB.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+corrplot(M_RT$r, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "circle", 
+         number.cex = 1,
+         order = "hclust",
+         addrect = 3,
+         #type = 'upper',
+         #addCoef.col = "black", 
+         #sig.level = 0.05, 
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         #insig = "label_sig",
+         #sig.level = c(.001, .01, .05), pch.cex = 1.5, 
+         #pch.col = "white", 
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+# Close the pdf file
+dev.off()
+
+
+require(psych)
+M_RT_all <- corr.test(Fragebogen_corr_RT[, -c(1,11)], adjust = 'fdr')
+diag(M_RT_all$r) = NA
+diag(M_RT_all$p) = NA
+
+require(corrplot)
+require(RColorBrewer)
+corrplot(M_RT_all$r, p.mat = M_RT_all$p, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "circle", 
+         number.cex = 1,
+         order = "hclust",
+         addrect = 3,
+         type = 'upper',
+         # addCoef.col = "black",
+         # sig.level = 0.05,
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         insig = "label_sig",
+         sig.level = c(.001, .01, .05), pch.cex = 1.5,
+         pch.col = "white",
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+
+# Open a pdf file
+pdf("./Desktop/corrplot_RT_all.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+corrplot(M_RT_all$r, p.mat = M_RT_all$p, 
+         col = rev(colorRampPalette(brewer.pal(11,'RdBu'))(20)),
+         method = "circle", 
+         number.cex = 1,
+         order = "hclust",
+         addrect = 3,
+         type = 'upper',
+         # addCoef.col = "black",
+         # sig.level = 0.05,
+         tl.col = "black", 
+         # tl.srt = 90,
+         mar = c(1, 0, 2, 1),
+         addgrid.col =  NA,
+         insig = "label_sig",
+         sig.level = c(.001, .01, .05), pch.cex = 1.5,
+         pch.col = "white",
+         na.label.col = NA, 
+         na.label = NA, 
+         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+# Close the pdf file
+dev.off()
