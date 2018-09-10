@@ -93,6 +93,7 @@ emmeans::emmip(RT_mod_no_log, Rew ~ Phase, type = "response", CIs = T) + # Vorhe
 
 ##### Saving Plots #####
 
+###### Emmips ######
 ## T über P
 # Open a pdf file
 pdf("./Desktop/emmip_RT_Main_TP.pdf", width = 10 , height = 10) 
@@ -132,5 +133,21 @@ emmeans::emmip(RT_mod_no_log, Rew ~ Phase, type = "response", CIs = T) + # Vorhe
         legend.title = element_blank()) + 
   geom_line(position = position_dodge(.1), size = 1) +
   geom_point(position = position_dodge(.1), size = 3)
+# Close the pdf file
+dev.off()
+
+###### Histogramme ######
+
+# Open a pdf file
+pdf("./Desktop/hist_main_RT_nolog.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(Hits_sum_All$m_RT, main = "Datenverteilung Reaktionszeiten Haupttestung (Original)", xlab = "Reaktionszeiten")
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/hist_main_RT_log.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(log(Hits_sum_All$m_RT), main = "Datenverteilung Reaktionszeiten Haupttestung (Logarithmiert)", xlab = "log(Reaktionszeiten)")
 # Close the pdf file
 dev.off()

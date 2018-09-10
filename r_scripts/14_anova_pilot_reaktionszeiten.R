@@ -107,6 +107,7 @@ emmeans::emmip(RT_mod_log_P1, ~ Phase, type = "response", CIs = T) + # Vorhersag
 
 ##### Saving Plots #####
 
+####### Emmips ######
 ## T über P
 # Open a pdf file
 pdf("./Desktop/emmip_RT_P1_TP.pdf", width = 10 , height = 10) 
@@ -149,6 +150,21 @@ emmeans::emmip(RT_mod_log_P1, ~ Phase, type = "response", CIs = T) + # Vorhersag
 # Close the pdf file
 dev.off()
 
+###### Histogramme ######
+
+# Open a pdf file
+pdf("./Desktop/hist_p1_hits_nolog.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(Hits_sum1_All$m_RT, main = "Datenverteilung Reaktionszeiten Pilot 1 (Original)", xlab = "Reaktionszeiten")
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/hist_p1_hits_log.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(log(Hits_sum1_All$m_RT), main = "Datenverteilung Reaktionszeiten Pilot 1 (Logarithmiert)", xlab = "log(Reaktionszeiten)")
+# Close the pdf file
+dev.off()
 
 
 ##### -- FÜR PILOT 2 -- Modell direkt auf Daten ohne summary #####
@@ -197,8 +213,11 @@ emmeans::emmip(RT_mod_no_log_P2, ~ Phase, type = "response", CIs = T) + # Vorher
   geom_line(position = position_dodge(.1), size = 1) +
   geom_point(position = position_dodge(.1), size = 3)
 
+
+########################
 ##### Saving Plots #####
 
+###### Emmips ######
 ## T über P
 # Open a pdf file
 pdf("./Desktop/emmip_RT_P2_TP.pdf", width = 10 , height = 10) 
@@ -241,4 +260,18 @@ emmeans::emmip(RT_mod_no_log_P2, ~ Phase, type = "response", CIs = T) + # Vorher
 # Close the pdf file
 dev.off()
 
+###### Histogramme #####
 
+# Open a pdf file
+pdf("./Desktop/hist_p2_hits_nolog.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(Hits_sum2_All$m_RT, main = "Datenverteilung Reaktionszeiten Pilot 2 (Original)", xlab = "Reaktionszeiten")
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/hist_p2_hits_log.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(log(Hits_sum2_All$m_RT), main = "Datenverteilung Reaktionszeiten Pilot 2 (Logarithmiert)", xlab = "log(Reaktionszeiten)")
+# Close the pdf file
+dev.off()

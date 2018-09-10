@@ -81,6 +81,7 @@ emmeans::emmip(FR_mod_log, Rew ~ Phase, type = "response", CIs = T) + # Vorhersa
 
 ##### Saving Plots #####
 
+##### Emmips ######
 ## T über P
 # Open a pdf file
 pdf("./Desktop/emmip_FR_Main_TP.pdf", width = 10 , height = 10) 
@@ -120,5 +121,21 @@ emmeans::emmip(FR_mod_log, Rew ~ Phase, type = "response", CIs = T) + # Vorhersa
         legend.title = element_blank()) + 
   geom_line(position = position_dodge(.1), size = 1) +
   geom_point(position = position_dodge(.1), size = 3)
+# Close the pdf file
+dev.off()
+
+###### Histogramme ######
+
+# Open a pdf file
+pdf("./Desktop/hist_main_FR_nolog.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(FAs_sum_All$Fehlerrate, main = "Datenverteilung Fehlerraten Haupttestung (Original)", xlab = "Fehlerraten")
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/hist_main_FR_log.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(log(FAs_sum_All$Fehlerrate), main = "Datenverteilung Fehlerraten Haupttestung (Logarithmiert)", xlab = "log(Fehlerraten)")
 # Close the pdf file
 dev.off()

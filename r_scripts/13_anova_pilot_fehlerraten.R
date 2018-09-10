@@ -90,6 +90,7 @@ emmeans::emmip(FR_mod_log_P1, ~ Phase, type = "response", CIs = T) + # Vorhersag
 
 ##### Saving Plots #####
 
+##### Emmips #####
 ## T über P
 # Open a pdf file
 pdf("./Desktop/emmip_FR_P1_TP.pdf", width = 10 , height = 10) 
@@ -131,6 +132,23 @@ emmeans::emmip(FR_mod_log_P1, ~ Phase, type = "response", CIs = T) + # Vorhersag
   geom_point(position = position_dodge(.1), size = 3)
 # Close the pdf file
 dev.off()
+
+###### Histogramme ######
+
+# Open a pdf file
+pdf("./Desktop/hist_p1_FR_nolog.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(FAs_sum1_All$Fehlerrate, main = "Datenverteilung Fehlerraten Pilot 1 (Original)", xlab = "Fehlerraten")
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/hist_p1_FR_log.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(log(FAs_sum1_All$Fehlerrate), main = "Datenverteilung Fehlerraten Pilot 1 (Logarithmiert)", xlab = "log(Fehlerraten)")
+# Close the pdf file
+dev.off()
+
 
 ###### -- FÜR PILOT 2 -- Modell direkt auf Daten ohne summary #####
 FR_mod_log_P2 <- lm(log(Fehlerrate) ~ Trialtype*Phase, data = FAs_sum2_All) # Rew immer = 0 (verzögert)
@@ -179,6 +197,7 @@ emmeans::emmip(FR_mod_log_P2, ~ Phase, type = "response", CIs = T) + # Vorhersag
 
 ##### Saving Plots #####
 
+###### Emmips ######
 ## T über P
 # Open a pdf file
 pdf("./Desktop/emmip_FR_P2_TP.pdf", width = 10 , height = 10) 
@@ -218,5 +237,21 @@ emmeans::emmip(FR_mod_log_P2, ~ Trialtype, type = "response", CIs = T) + # Vorhe
         legend.title = element_blank()) + 
   geom_line(position = position_dodge(.1), size = 1) +
   geom_point(position = position_dodge(.1), size = 3)
+# Close the pdf file
+dev.off()
+
+###### Histogramme ######
+
+# Open a pdf file
+pdf("./Desktop/hist_p2_FR_nolog.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(FAs_sum2_All$Fehlerrate, main = "Datenverteilung Fehlerraten Pilot 2 (Original)", xlab = "Fehlerraten")
+# Close the pdf file
+dev.off()
+
+# Open a pdf file
+pdf("./Desktop/hist_p2_FR_log.pdf", width = 10 , height = 10) 
+# 2. Create a plot
+hist(log(FAs_sum2_All$Fehlerrate), main = "Datenverteilung Fehlerraten Pilot 2 (Logarithmiert)", xlab = "log(Fehlerraten)")
 # Close the pdf file
 dev.off()
