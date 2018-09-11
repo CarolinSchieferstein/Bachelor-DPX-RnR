@@ -305,7 +305,8 @@ corrplot(M_FB_rew0$r,
          pch.col = "white", 
          na.label.col = NA, 
          na.label = NA, 
-         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+         cl.ratio = .25, cl.length = 11, cl.cex = 1,
+         title = "Verzögerte Belohnung")
 
 
 require(psych)
@@ -333,7 +334,8 @@ corrplot(M_FB_rew1$r,
          pch.col = "white", 
          na.label.col = NA, 
          na.label = NA, 
-         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+         cl.ratio = .25, cl.length = 11, cl.cex = 1,
+         title = "Direkte Belohnung")
 
 ##### Korrelationen für AX und AY getrennt für Rew #####
 
@@ -716,7 +718,8 @@ corrplot(M_FB_rew0$r,
          pch.col = "white", 
          na.label.col = NA, 
          na.label = NA, 
-         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+         cl.ratio = .25, cl.length = 11, cl.cex = 1,
+         title = "Verzögerte Belohnung")
 # Close the pdf file
 dev.off()
 
@@ -741,7 +744,8 @@ corrplot(M_FB_rew1$r,
          pch.col = "white", 
          na.label.col = NA, 
          na.label = NA, 
-         cl.ratio = .25, cl.length = 11, cl.cex = 1)
+         cl.ratio = .25, cl.length = 11, cl.cex = 1,
+         title = "Direkte Belohnung")
 # Close the pdf file
 dev.off()
 
@@ -892,3 +896,10 @@ corrplot(M_RT_all_rew1$r, p.mat = M_RT_all_rew1$p,
          cl.ratio = .25, cl.length = 11, cl.cex = 1)
 # Close the pdf file
 dev.off()
+
+
+##### Test, ob die FB-WErte der Gruppen sig vereschieden sind --> Wilcoxon-Test #####
+
+##### Für Skalenmittelwerte #####
+wilcox.test(Fragebogen_plot_rew0$value, Fragebogen_plot_rew1$value, alternative = "two.sided")
+#???????
