@@ -901,5 +901,5 @@ dev.off()
 ##### Test, ob die FB-WErte der Gruppen sig vereschieden sind --> Wilcoxon-Test #####
 
 ##### Für Skalenmittelwerte #####
-wilcox.test(Fragebogen_plot_rew0$value, Fragebogen_plot_rew1$value, alternative = "two.sided")
-#???????
+wilcox.test(Fragebogen_plot_rew0$value, Fragebogen_plot_rew1$value, alternative = "two.sided") # unsicher: richtiger Test?
+
