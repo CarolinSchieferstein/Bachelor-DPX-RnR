@@ -223,7 +223,7 @@ dev.off()
 # Open a pdf file
 pdf("./Desktop/emmip_FR_P2_PT.pdf", width = 10 , height = 10) 
 # 2. Create a plot
-emmeans::emmip(FR_mod_log_P2, ~ Trialtype, type = "response", CIs = T) + # Vorhersage erwarteter FR nach Modell
+emmeans::emmip(FR_mod_log_P2, ~ Phase, type = "response", CIs = T) + # Vorhersage erwarteter FR nach Modell
   theme_bw() + 
   labs(y = "Vorhergesagte Fehlerraten",
        x = "Phasen",
